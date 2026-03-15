@@ -1,0 +1,4 @@
+app:
+  jwt:
+    secret: mySecretKeyMustBeAtLeast32CharactersLongMySuperSecretKey
+    expiration-ms: 86400000
