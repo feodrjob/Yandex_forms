@@ -1,5 +1,8 @@
 package org.example.yandex_forms.Controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.yandex_forms.DTO.Auth_DTO.AuthResponse;
@@ -18,6 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
+    @Operation(summary = "Регистрация нового пользователя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешная регистрация"),
+            @ApiResponse(responseCode = "400", description = "Некорректные данные")
+    })
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));

@@ -1,4 +1,7 @@
 package org.example.yandex_forms.Exception;
 
-public class InvalidFormDataException {
+public class InvalidFormDataException extends RuntimeException {
+    public InvalidFormDataException(String message) {
+        super(message);
+    }
 }

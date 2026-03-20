@@ -15,5 +15,4 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Transactional
     @Query("DELETE FROM Question q WHERE q.form.id = :formId")
     void deleteAllByFormId(Long formId);
-
 }

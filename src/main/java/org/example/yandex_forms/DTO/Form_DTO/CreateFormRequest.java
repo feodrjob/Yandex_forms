@@ -23,5 +23,5 @@ public class CreateFormRequest {
     @NotNull(message = "Список вопросов не может быть null")
     @Size(min = 1, message = "Форма должна содержать хотя бы один вопрос")
     @Valid
-    private List<QuestionDto> questions; // переименовано с questionDtoList для соответствия REST-конвенциям
+    private List<QuestionDto> questions;
 }

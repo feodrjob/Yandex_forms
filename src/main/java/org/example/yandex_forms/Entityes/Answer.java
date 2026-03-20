@@ -1,29 +1,37 @@
 package org.example.yandex_forms.Entityes;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "answers")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Answer {  // переименовал в единственное число
+@Schema(description = "Ответ на вопрос в рамках заполненной формы")
+public class Answer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Уникальный идентификатор ответа", example = "1")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "response_id", nullable = false)
+    @Schema(description = "Заполненная форма (Response), к которой относится ответ")
     private Response response;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id", nullable = false)  // исправил имя колонки
-    private Question question;  // переименовал поле в question (единственное число)
+    @JoinColumn(name = "question_id", nullable = false)
+    @Schema(description = "Вопрос, на который дан ответ")
+    private Question question;
 
-    @Column(nullable = false, length = 1000)  // добавил поле для хранения ответа
-    private String answerValue;  // здесь будет текст ответа или ID опций через запятую
+    @Column(nullable = false, length = 1000)
+    @Schema(description = "Значение ответа: текст или ID вариантов (через запятую)", example = "42 или 1,3,5")
+    private String answerValue;
 }

@@ -9,14 +9,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring", uses = {AnswerMapper.class})
+@Mapper(componentModel = "spring") // убрал uses = AnswerMapper.class
 public interface AnswerMapper {
 
     @Mapping(target = "questionId", source = "question.id")
     @Mapping(target = "questionLabel", source = "question.label")
     @Mapping(target = "value", source = "answerValue")
     AnswerResponseDto toResponse(Answer answer);
-
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "response", source = "response")
@@ -26,13 +25,11 @@ public interface AnswerMapper {
                     Response response,
                     Question question);
 
-
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "response", ignore = true)  // установим позже
-    @Mapping(target = "question", ignore = true)  // установим в сервисе
+    @Mapping(target = "response", ignore = true)
+    @Mapping(target = "question", ignore = true)
     @Mapping(target = "answerValue", source = "value")
     Answer fromSubmitRequest(SubmitAnswerRequest request);
-
 
     @Named("createAnswerWithQuestion")
     default Answer createAnswerWithQuestion(SubmitAnswerRequest request, Question question) {

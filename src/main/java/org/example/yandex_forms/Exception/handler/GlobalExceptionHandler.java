@@ -1,4 +1,4 @@
-package org.example.yandex_forms.Exception;
+package org.example.yandex_forms.Exception.handler;
 
 import org.example.yandex_forms.Exception.*;
 import org.springframework.http.HttpStatus;

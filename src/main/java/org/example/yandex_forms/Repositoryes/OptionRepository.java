@@ -1,4 +1,5 @@
 package org.example.yandex_forms.Repositoryes;
+
 import jakarta.transaction.Transactional;
 import org.example.yandex_forms.Entityes.Option;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +13,6 @@ public interface OptionRepository extends JpaRepository<Option, Long> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM Option o WHERE o.question.id =: questionId")
+    @Query("DELETE FROM Option o WHERE o.question.id = :questionId") // убрал пробел после =:
     void deleteAllByQuestionId(Long questionId);
 }
