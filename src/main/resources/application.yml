@@ -19,7 +19,7 @@ spring:
 
 app:
   jwt:
-    secret: "mySecretKeyWithAtLeast32CharactersLong!"
+    secret: "mySecretKeyMustBeAtLeast32CharactersLongMySuperSecretKey"
     expiration-ms: 86400000   # 24 часа
 
 springdoc:

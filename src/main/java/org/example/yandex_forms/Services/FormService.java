@@ -137,15 +137,17 @@ public class FormService {
     public Form updateForm(Long formId, Long userId, CreateFormRequest request) {
         Form form = findFormAndCheckOwnership(formId, userId);
 
-        // Валидация новых вопросов
+        // Валидация новых вопросов (как у тебя было)
         request.getQuestions().forEach(this::validateQuestion);
 
-        // Удаляем старые вопросы (и опции каскадно)
-        questionRepository.deleteAllByFormId(formId);
+        // Очищаем старые вопросы — orphanRemoval удалит их и все опции
+        form.getQuestions().clear();
 
+        // Обновляем заголовок и описание
         form.setTitle(request.getTitle());
         form.setDescription(request.getDescription());
 
+        // Добавляем новые вопросы
         for (QuestionDto qDto : request.getQuestions()) {
             Question question = new Question();
             question.setType(qDto.getType());
@@ -153,18 +155,19 @@ public class FormService {
             question.setRequired(qDto.getRequired());
             question.setOrderIndex(qDto.getOrderIndex());
 
-            form.addQuestion(question);
+            form.addQuestion(question); // добавит в список и установит form
 
             if (qDto.getOptions() != null && !qDto.getOptions().isEmpty()) {
                 for (OptionDto oDto : qDto.getOptions()) {
                     Option option = new Option();
-                    option.setOptionValue(oDto.getValue());   // правильный сеттер
+                    option.setOptionValue(oDto.getValue());
                     option.setOrderIndex(oDto.getOrderIndex());
                     question.addOption(option);
                 }
             }
         }
 
+        // Сохраняем форму — каскад сам сохранит новые вопросы и опции
         return formRepository.save(form);
     }
 }
