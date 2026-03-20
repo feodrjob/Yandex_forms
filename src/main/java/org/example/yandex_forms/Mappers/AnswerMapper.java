@@ -14,14 +14,14 @@ public interface AnswerMapper {
 
     @Mapping(target = "questionId", source = "question.id")
     @Mapping(target = "questionLabel", source = "question.label")
-    @Mapping(target = "value", source = "value")
+    @Mapping(target = "value", source = "answerValue")
     AnswerResponseDto toResponse(Answer answer);
 
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "response", source = "response")
     @Mapping(target = "question", source = "question")
-    @Mapping(target = "value", source = "request.value")
+    @Mapping(target = "answerValue", source = "request.value")
     Answer toEntity(SubmitAnswerRequest request,
                     Response response,
                     Question question);
@@ -30,7 +30,7 @@ public interface AnswerMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "response", ignore = true)  // установим позже
     @Mapping(target = "question", ignore = true)  // установим в сервисе
-    @Mapping(target = "value", source = "value")
+    @Mapping(target = "answerValue", source = "value")
     Answer fromSubmitRequest(SubmitAnswerRequest request);
 
 
@@ -40,7 +40,7 @@ public interface AnswerMapper {
 
         Answer answer = new Answer();
         answer.setQuestion(question);
-        answer.setValue(request.getValue());
+        answer.setAnswerValue(request.getValue());
         return answer;
     }
 }

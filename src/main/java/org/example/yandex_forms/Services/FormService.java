@@ -17,25 +17,27 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor // Автоматически создаем конструктор для всех final
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FormService
 {
     private final UserRepository userRepository;
     private final FormRepository formRepository;
-    private  final QuestionRepository questionRepository;
+    private final QuestionRepository questionRepository;
 
     @Transactional
     public Form createForm(Long userId, CreateFormRequest request) {
         // 1. Найти пользователя
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
         // 2. Создать форму
         Form form = new Form();
         form.setUser(user);
         form.setTitle(request.getTitle());
         form.setDescription(request.getDescription());
-        // 3. Для каждого вопроса из request.getQuestions() создать Question, заполнить поля
+
+        // 3. Для каждого вопроса
         for (QuestionDto qDto : request.getQuestions())
         {
             Question question = new Question();
@@ -46,12 +48,18 @@ public class FormService
 
             form.addQuestion(question);
 
-            // 4. Для каждого вопроса, если тип RADIO/CHECKBOX и есть options, создать Option и привязать
-
+            // 4. Для каждого вопроса с опциями
             if (qDto.getOptions() != null && !qDto.getOptions().isEmpty()) {
                 for (OptionDto optionDto : qDto.getOptions()) {
                     Option option = new Option();
-                    option.setValue(optionDto.getValue());
+
+                    // ИСПРАВЛЕНО: используем правильный сеттер!
+                    // Если поле называется optionValue:
+                    option.setOptionValue(optionDto.getValue());  // было option.setValue()
+
+                    // ИЛИ если поле называется answerValue:
+                    // option.setAnswerValue(optionDto.getValue());  // было option.setValue()
+
                     option.setOrderIndex(optionDto.getOrderIndex());
                     question.addOption(option);
                 }
@@ -70,7 +78,7 @@ public class FormService
     {
         if (!userRepository.existsById(userId))
         {
-            throw new RuntimeException("Form not found");
+            throw new RuntimeException("User not found");  // ИСПРАВЛЕНО: правильное сообщение
         }
         return formRepository.findAllByUserId(userId);
     }
@@ -115,7 +123,10 @@ public class FormService
             if (qDto.getOptions() != null && !qDto.getOptions().isEmpty()) {
                 for (OptionDto oDto : qDto.getOptions()) {
                     Option option = new Option();
-                    option.setValue(oDto.getValue());
+
+                    // ИСПРАВЛЕНО: используем правильный сеттер!
+                    option.setOptionValue(oDto.getValue());  // было option.setValue()
+
                     option.setOrderIndex(oDto.getOrderIndex());
                     question.addOption(option);
                 }
@@ -124,5 +135,4 @@ public class FormService
 
         return formRepository.save(form);
     }
-
 }
