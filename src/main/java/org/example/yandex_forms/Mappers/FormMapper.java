@@ -6,7 +6,7 @@ import org.example.yandex_forms.Entityes.Form;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {QuestionMapper.class}   )
 public interface FormMapper {
     @Mapping(target = "createdBy", source = "user")
     @Mapping(target = "questions", source = "questions")

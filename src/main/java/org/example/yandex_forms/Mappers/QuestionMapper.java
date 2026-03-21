@@ -7,8 +7,14 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
+
+    @Mapping(target = "id", source = "id")   // ← добавить
     @Mapping(target = "options", source = "options")
     QuestionDto toResponse(Question question);
 

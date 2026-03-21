@@ -14,6 +14,10 @@ import java.util.List;
 @Schema(description = "DTO вопроса, входящего в состав формы")
 public class QuestionDto {
 
+
+    @Schema(description = "Идентификатор вопроса", example = "1")
+    private Long id;
+
     @Schema(description = "Тип вопроса (TEXT, RADIO, CHECKBOX)", example = "RADIO", required = true)
     @NotNull(message = "Тип вопроса не может быть null")
     private QuestionType type;
